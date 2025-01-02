@@ -12,3 +12,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Link {
+  id         Int      @id @default(autoincrement())
+  title      String?  @db.VarChar(255)
+  status     Int      @default(1) // 1: PENDING, 2: DELETED
+  url        String   @db.VarChar(512)
+  iconUrl    String?  @db.VarChar(512)
+  ogImageUrl String?  @db.VarChar(512)
+  siteName   String?  @db.VarChar(512)
+  domainUrl  String?  @db.VarChar(512)
+  createdAt  DateTime @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime @updatedAt @db.Timestamp(0)
+  deletedAt  DateTime? @db.Timestamp(0)
+}
