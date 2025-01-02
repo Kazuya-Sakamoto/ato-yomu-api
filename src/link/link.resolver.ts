@@ -10,9 +10,9 @@ export class LinkResolver {
 
   @Query(() => [LinkModel], { nullable: 'items' })
   // @UseGuards(JwtAuthGuard)
-  async getLinks(
+  async getLinkWithCategories(
     @Args('userId', { type: () => Int }) userId: number,
   ): Promise<Link[]> {
-    return await this.linkService.getLinks(userId);
+    return await this.linkService.getLinkWithCategories(userId);
   }
 }

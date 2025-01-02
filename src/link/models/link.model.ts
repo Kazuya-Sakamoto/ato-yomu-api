@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Category } from '../../category/models/category';
 
 @ObjectType()
 export class Link {
@@ -25,6 +26,9 @@ export class Link {
 
   @Field({ nullable: true })
   domainUrl?: string;
+
+  @Field(() => [Category], { nullable: true })
+  categories?: Category[];
 
   @Field()
   createdAt: Date;

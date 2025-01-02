@@ -14,30 +14,51 @@ datasource db {
 }
 
 model Link {
-  id         Int      @id @default(autoincrement())
-  title      String?  @db.VarChar(255)
-  status     Int      @default(1) // 1: PENDING, 2: DELETED
-  url        String   @db.Text
-  iconUrl    String?  @db.Text
-  ogImageUrl String?  @db.Text
-  siteName   String?  @db.Text
-  domainUrl  String?  @db.Text
+  id         Int       @id @default(autoincrement())
+  title      String?   @db.VarChar(255)
+  status     Int       @default(1) // 1: PENDING, 2: DELETED
+  url        String    @db.Text
+  iconUrl    String?   @db.Text
+  ogImageUrl String?   @db.Text
+  siteName   String?   @db.Text
+  domainUrl  String?   @db.Text
   userId     Int
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now()) @db.Timestamp(0)
-  updatedAt  DateTime @updatedAt @db.Timestamp(0)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime  @updatedAt @db.Timestamp(0)
   deletedAt  DateTime? @db.Timestamp(0)
+  linkCategories LinkCategory[]
 }
-
 
 model User {
   id        Int      @id @default(autoincrement())
-  deviceId  String  @unique
-  email     String?   @unique
+  deviceId  String   @unique
+  email     String?  @unique
   password  String?
   name      String?
   createdAt DateTime @default(now()) @db.Timestamp(0)
   updatedAt DateTime @updatedAt @db.Timestamp(0)
   deletedAt DateTime? @db.Timestamp(0)
   links     Link[]
+  categories Category[]
+}
+
+model Category {
+  id        Int              @id @default(autoincrement())
+  name      String           @db.VarChar(50)
+  userId    Int
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime         @default(now()) @db.Timestamp(0)
+  updatedAt DateTime         @updatedAt @db.Timestamp(0)
+  linkCategories LinkCategory[]
+}
+
+model LinkCategory {
+  id          Int       @id @default(autoincrement())
+  linkId      Int
+  categoryId  Int
+  link        Link      @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt   DateTime  @updatedAt @db.Timestamp(0)
 }
